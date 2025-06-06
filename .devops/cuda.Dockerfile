@@ -1,10 +1,10 @@
-ARG UBUNTU_VERSION=22.04
+ARG UBUNTU_VERSION=24.04
 # This needs to generally match the container host's environment.
-ARG CUDA_VERSION=12.4.0
+ARG CUDA_VERSION=12.8.1
 # Target the CUDA build image
-ARG BASE_CUDA_DEV_CONTAINER=nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION}
+ARG BASE_CUDA_DEV_CONTAINER=docker.io/nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION}
 
-ARG BASE_CUDA_RUN_CONTAINER=nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu${UBUNTU_VERSION}
+ARG BASE_CUDA_RUN_CONTAINER=docker.io/nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu${UBUNTU_VERSION}
 
 FROM ${BASE_CUDA_DEV_CONTAINER} AS build
 
@@ -60,8 +60,7 @@ RUN apt-get update \
     git \
     python3 \
     python3-pip \
-    && pip install --upgrade pip setuptools wheel \
-    && pip install -r requirements.txt \
+    && pip install --break-system-packages -r requirements.txt \
     && apt autoremove -y \
     && apt clean -y \
     && rm -rf /tmp/* /var/tmp/* \
